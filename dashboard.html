@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard docente · Diario delle vacanze estive</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--mare:#1C6E8C;--mare-d:#12556E;--sole:#E0A52B;--terracotta:#C8613C;--pineta:#3E9A6D;
+  --sabbia:#FBF6EC;--carta:#fff;--inchiostro:#2A2A28;--muted:#6B6357;--brd:#EADFC8;--brd2:#D9C9AC;
+  --warn:#B8860B;--warnL:rgba(184,134,11,.10);--head:'Lexend',sans-serif;--body:'Atkinson Hyperlegible',sans-serif}
+*{box-sizing:border-box}body{font-family:var(--body);background:var(--sabbia);color:var(--inchiostro);margin:0;font-size:17px;line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 20px 60px}
+h1{font-family:var(--head);color:var(--mare-d);margin:0}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.top img{width:46px;height:46px;object-fit:contain}
+.sub{color:var(--muted);margin-bottom:22px}
+.gate{max-width:420px;margin:8vh auto;background:#fff;border:1px solid var(--brd);border-radius:18px;padding:28px;box-shadow:0 2px 14px rgba(18,85,110,.08);text-align:center}
+.gate input{width:100%;padding:12px 14px;border:1px solid var(--brd2);border-radius:11px;font-size:16px;font-family:var(--body);margin-top:14px}
+.gate input:focus{outline:none;border-color:var(--mare);box-shadow:0 0 0 3px rgba(28,110,140,.15)}
+.gate button{margin-top:14px;width:100%;background:var(--sole);color:#3a2a00;font-family:var(--head);font-weight:700;border:none;border-radius:12px;padding:13px;font-size:16px;cursor:pointer}
+.msg{margin-top:12px;font-weight:600;min-height:22px}
+.msg.err{color:var(--warn)} .msg.ok{color:var(--pineta)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.panel{background:#fff;border:1px solid var(--brd);border-radius:16px;padding:18px 20px;box-shadow:0 2px 12px rgba(18,85,110,.06)}
+.panel h2{font-family:var(--head);color:var(--mare-d);font-size:16px;margin:0 0 12px}
+.kpis{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid var(--brd);border-radius:14px;padding:14px 18px;flex:1;min-width:150px}
+.kpi .n{font-family:var(--head);font-weight:700;font-size:28px;color:var(--mare)}
+.kpi .l{color:var(--muted);font-size:14px}
+.bar{margin:7px 0}
+.bar .lab{display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px}
+.bar .track{height:12px;background:var(--sabbia);border-radius:7px;overflow:hidden}
+.bar .fill{height:100%;background:var(--mare);border-radius:7px}
+.bar.g .fill{background:var(--pineta)} .bar.a .fill{background:var(--warn)} .bar.t .fill{background:var(--terracotta)}
+ul.list{list-style:none;padding:0;margin:0;max-height:230px;overflow:auto}
+ul.list li{padding:7px 0;border-bottom:1px solid var(--brd);font-size:15px}
+ul.list li b{color:var(--mare-d)}
+.muted{color:var(--muted);font-size:14px}
+.reload{background:#fff;border:1px solid var(--brd2);color:var(--mare-d);font-family:var(--head);font-weight:600;border-radius:10px;padding:8px 14px;cursor:pointer}
+a.home{color:var(--mare);text-decoration:none;font-family:var(--head);font-weight:600;font-size:14px}
+</style>
+</head>
+<body>
+<!-- Blocco cifrato generato con cripta.html (config: url + token). Vuoto = da configurare. -->
+<script>var BLOB="shXCQktDQIkj1KylB4mgIFCxRujV1szvRex9Yts+iI8VbcIonhnLC1BN8tsO/yQcn+YhEZtxd9GZWBHtqmbUKOnyA5rxAYr0gIjlISUURRScca19tqZ1sMZDbTZDSfCaILGx5bUcCDl6L1hDdYkRF0A6bSeet/oHmR75Dq1rICd9Vvs0GE3NyRykcKJWD9WAhDwJJrlE35VvVJasOJwA2L0/nn3y7dwhWRjzgp66orYZmIP/X7hA7pbvlq0eu3d3kZQBLPUFzReOsPE3slU6iLnwUg==";</script>
+
+<div id="gate" class="gate">
+  <div style="font-family:var(--head);font-weight:700;color:var(--mare-d);font-size:20px">Area docente</div>
+  <div class="muted" style="margin-top:6px">Dashboard del Diario delle vacanze estive</div>
+  <input type="password" id="pwd" placeholder="password" autocomplete="off">
+  <button id="unlock">Entra</button>
+  <div class="msg" id="gmsg"></div>
+</div>
+
+<div id="app" class="wrap" style="display:none">
+  <div class="top"><img src="logo.png" alt=""><div><h1>Dashboard · Diario delle vacanze estive</h1>
+    <div class="sub" style="margin:0">Scuola Sacra Famiglia · dati della classe</div></div></div>
+  <div style="margin:10px 0 18px;display:flex;gap:10px;align-items:center">
+    <button class="reload" id="reload">Ricarica dati</button>
+    <a class="home" href="index.html">← torna all'app</a>
+    <span class="muted" id="status"></span>
+  </div>
+  <div id="dash"></div>
+</div>
+
+<script>
+"use strict";
+const dec=new TextDecoder(), enc=new TextEncoder();
+function ub64(s){var bin=atob(s),b=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return b;}
+async function deriveKey(pwd,salt){
+  const base=await crypto.subtle.importKey('raw',enc.encode(pwd),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:100000,hash:'SHA-256'},
+    base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function decifra(pwd){
+  const raw=ub64(BLOB), salt=raw.slice(0,16), iv=raw.slice(16,28), ct=raw.slice(28);
+  const key=await deriveKey(pwd,salt);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:iv},key,ct);
+  return JSON.parse(dec.decode(pt));
+}
+
+let CFG=null;
+async function unlock(){
+  const gmsg=document.getElementById('gmsg');
+  if(!BLOB){ gmsg.textContent='Dashboard non ancora configurata: genera il blocco con cripta.html.'; gmsg.className='msg err'; return; }
+  try{
+    CFG=await decifra(document.getElementById('pwd').value);
+    document.getElementById('gate').style.display='none';
+    document.getElementById('app').style.display='block';
+    loadData();
+  }catch(e){ gmsg.textContent='Password errata.'; gmsg.className='msg err'; }
+}
+document.getElementById('unlock').onclick=unlock;
+document.getElementById('pwd').addEventListener('keydown',e=>{ if(e.key==='Enter') unlock(); });
+
+function loadData(){
+  document.getElementById('status').textContent='Carico i dati…';
+  const cb='__dash_cb';
+  window[cb]=function(data){
+    if(data && data.error){ document.getElementById('status').textContent='Token non valido (controlla READ_TOKEN in Code.gs).'; return; }
+    render(Array.isArray(data)?data:[]);
+    document.getElementById('status').textContent=(data.length||0)+' diari · aggiornato ora';
+  };
+  const s=document.createElement('script');
+  s.src=CFG.url+'?mode=read&callback='+cb+'&token='+encodeURIComponent(CFG.token);
+  s.onerror=()=>{ document.getElementById('status').textContent='Impossibile contattare il foglio.'; };
+  document.body.appendChild(s);
+}
+document.getElementById('reload').onclick=loadData;
+
+function J(v){ try{ return JSON.parse(v||'[]'); }catch(e){ return []; } }
+function Jo(v){ try{ return JSON.parse(v||'{}'); }catch(e){ return {}; } }
+function count(arr,key){ const m={}; arr.forEach(x=>{ const k=(x[key]||'').toString().trim(); if(k) m[k]=(m[k]||0)+1; }); return m; }
+function bars(map,cls){ const tot=Object.values(map).reduce((a,b)=>a+b,0)||1;
+  const keys=Object.keys(map).sort((a,b)=>map[b]-map[a]);
+  return keys.map(k=>'<div class="bar '+(cls||'')+'"><div class="lab"><span>'+esc(k)+'</span><span>'+map[k]+'</span></div>'+
+    '<div class="track"><div class="fill" style="width:'+Math.round(map[k]/tot*100)+'%"></div></div></div>').join('')||'<div class="muted">nessun dato</div>'; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function avg(arr,f){ const v=arr.map(f).map(x=>parseFloat(String(x).replace(',','.'))).filter(x=>!isNaN(x)); return v.length? Math.round(v.reduce((a,b)=>a+b,0)/v.length):null; }
+
+function render(rows){
+  const dash=document.getElementById('dash');
+  if(!rows.length){ dash.innerHTML='<div class="panel"><h2>Ancora nessun diario</h2><div class="muted">Quando gli studenti consegnano, i dati appariranno qui.</div></div>'; return; }
+  const viaggio=rows.filter(r=>r.percorso==='viaggio').length, casa=rows.filter(r=>r.percorso==='casa').length;
+  const prim=rows.filter(r=>r.livello==='primaria').length, sec=rows.filter(r=>r.livello==='secondaria').length;
+  // aggregati
+  const sapori=[], canzoni=[], frodiMap={};
+  rows.forEach(r=>{ J(r.sapori).forEach(s=>{ if(s&&s.prodotto) sapori.push(s); });
+    J(r.colonna).forEach(x=>{ if(x&&x.titolo) canzoni.push(x); });
+    const d=Jo(r.digitale); (d.frodi||[]).forEach(f=>{ frodiMap[f]=(frodiMap[f]||0)+1; }); });
+  const compSuono=count(rows.map(r=>({v:Jo(r.compiti).comeSuonava})),'v');
+  const servMap=count(rows.map(r=>({v:Jo(r.digitale).percorsoServito})),'v');
+  const scatt=avg(rows,r=>Jo(r.digitale).fotoScattate), pubb=avg(rows,r=>Jo(r.digitale).fotoPubblicate);
+
+  let h='<div class="kpis">'+
+    '<div class="kpi"><div class="n">'+rows.length+'</div><div class="l">diari consegnati</div></div>'+
+    '<div class="kpi"><div class="n">'+viaggio+' / '+casa+'</div><div class="l">viaggio / a casa</div></div>'+
+    '<div class="kpi"><div class="n">'+(avg(rows,r=>r.kmReale||r.kmStima)||'–')+'</div><div class="l">km medi</div></div>'+
+    '<div class="kpi"><div class="n">'+(scatt==null?'–':scatt)+'</div><div class="l">foto scattate (media)</div></div>'+
+    '</div>';
+  h+='<div class="grid">';
+  h+='<div class="panel"><h2>Chi ha viaggiato e chi è rimasto</h2>'+bars({'Ho viaggiato':viaggio,'A casa':casa})+'</div>';
+  h+='<div class="panel"><h2>Livello</h2>'+bars({'Primaria':prim,'Secondaria':sec},'t')+'</div>';
+  h+='<div class="panel"><h2>Mezzi di trasporto</h2>'+bars(count(rows,'mezzo'))+'</div>';
+  h+='<div class="panel"><h2>Le mete</h2><ul class="list">'+rows.filter(r=>r.meta).map(r=>'<li><b>'+esc(r.meta)+'</b> <span class="muted">'+esc(r.nick||'')+'</span></li>').join('')+'</ul></div>';
+  h+='<div class="panel"><h2>«Hai fatto i compiti?» — come suonava</h2>'+bars(compSuono,'a')+'</div>';
+  h+='<div class="panel"><h2>Il percorso di cittadinanza è servito?</h2>'+bars(servMap,'g')+
+     '<div class="muted" style="margin-top:8px">Foto pubblicate (media): <b>'+(pubb==null?'–':pubb)+'</b></div></div>';
+  h+='<div class="panel"><h2>Trappole digitali incontrate</h2>'+bars(frodiMap,'a')+'</div>';
+  h+='<div class="panel"><h2>Colonna sonora dell\'estate</h2><ul class="list">'+
+     (canzoni.length?canzoni.map(x=>'<li><b>'+esc(x.titolo)+'</b>'+(x.artista?' — '+esc(x.artista):'')+'</li>').join(''):'<li class="muted">nessuna</li>')+'</ul></div>';
+  h+='<div class="panel"><h2>I sapori raccontati</h2><ul class="list">'+
+     (sapori.length?sapori.map(x=>'<li><b>'+esc(x.prodotto)+'</b>'+(x.dove?' — '+esc(x.dove):'')+'</li>').join(''):'<li class="muted">nessuno</li>')+'</ul></div>';
+  h+='</div>';
+  dash.innerHTML=h;
+}
+</script>
+</body>
+</html>
