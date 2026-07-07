@@ -7,9 +7,9 @@
 <link rel="icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--mare:#1C6E8C;--mare-d:#12556E;--sole:#E0A52B;--terracotta:#C8613C;--pineta:#3E9A6D;
-  --sabbia:#FBF6EC;--carta:#fff;--inchiostro:#2A2A28;--muted:#6B6357;--brd:#EADFC8;--brd2:#D9C9AC;
-  --warn:#B8860B;--warnL:rgba(184,134,11,.10);--head:'Lexend',sans-serif;--body:'Atkinson Hyperlegible',sans-serif}
+:root{--mare:#1685C7;--mare-d:#0F5C8C;--sole:#E8A61E;--terracotta:#C8613C;--pineta:#3E9A6D;
+  --sabbia:#FBF7EF;--carta:#fff;--inchiostro:#233240;--muted:#5C6975;--brd:#E6E7DF;--brd2:#CCD6D2;
+  --warn:#B8860B;--warnL:rgba(184,134,11,.12);--head:'Lexend',sans-serif;--body:'Atkinson Hyperlegible',sans-serif}
 *{box-sizing:border-box}body{font-family:var(--body);background:var(--sabbia);color:var(--inchiostro);margin:0;font-size:17px;line-height:1.6}
 .wrap{max-width:1100px;margin:0 auto;padding:22px 20px 60px}
 h1{font-family:var(--head);color:var(--mare-d);margin:0}
@@ -129,10 +129,12 @@ function render(rows){
   const viaggio=rows.filter(r=>r.percorso==='viaggio').length, casa=rows.filter(r=>r.percorso==='casa').length;
   const prim=rows.filter(r=>r.livello==='primaria').length, sec=rows.filter(r=>r.livello==='secondaria').length;
   // aggregati
-  const sapori=[], canzoni=[], frodiMap={};
+  const sapori=[], canzoni=[], frodiMap={}, attMap={};
   rows.forEach(r=>{ J(r.sapori).forEach(s=>{ if(s&&s.prodotto) sapori.push(s); });
     J(r.colonna).forEach(x=>{ if(x&&x.titolo) canzoni.push(x); });
-    const d=Jo(r.digitale); (d.frodi||[]).forEach(f=>{ frodiMap[f]=(frodiMap[f]||0)+1; }); });
+    const d=Jo(r.digitale); (d.frodi||[]).forEach(f=>{ frodiMap[f]=(frodiMap[f]||0)+1; });
+    (d.attivita||[]).forEach(a=>{ attMap[a]=(attMap[a]||0)+1; }); });
+  const bufMap=count(rows.map(r=>({v:Jo(r.digitale).bufale})),'v');
   const compSuono=count(rows.map(r=>({v:Jo(r.compiti).comeSuonava})),'v');
   const servMap=count(rows.map(r=>({v:Jo(r.digitale).percorsoServito})),'v');
   const scatt=avg(rows,r=>Jo(r.digitale).fotoScattate), pubb=avg(rows,r=>Jo(r.digitale).fotoPubblicate);
@@ -151,6 +153,8 @@ function render(rows){
   h+='<div class="panel"><h2>«Hai fatto i compiti?» — come suonava</h2>'+bars(compSuono,'a')+'</div>';
   h+='<div class="panel"><h2>Il percorso di cittadinanza è servito?</h2>'+bars(servMap,'g')+
      '<div class="muted" style="margin-top:8px">Foto pubblicate (media): <b>'+(pubb==null?'–':pubb)+'</b></div></div>';
+  h+='<div class="panel"><h2>Cosa hanno fatto online</h2>'+bars(attMap,'t')+'</div>';
+  h+='<div class="panel"><h2>Bufale incontrate</h2>'+bars(bufMap,'a')+'</div>';
   h+='<div class="panel"><h2>Trappole digitali incontrate</h2>'+bars(frodiMap,'a')+'</div>';
   h+='<div class="panel"><h2>Colonna sonora dell\'estate</h2><ul class="list">'+
      (canzoni.length?canzoni.map(x=>'<li><b>'+esc(x.titolo)+'</b>'+(x.artista?' — '+esc(x.artista):'')+'</li>').join(''):'<li class="muted">nessuna</li>')+'</ul></div>';

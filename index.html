@@ -9,21 +9,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --mare:#1C6E8C; --mare-d:#12556E; --sole:#E0A52B;
-  --terracotta:#C8613C; --pineta:#3E9A6D;
-  --sabbia:#FBF6EC; --carta:#FFFFFF; --inchiostro:#2A2A28; --muted:#6B6357;
-  --brd:#EADFC8; --brd2:#D9C9AC; --warn:#B8860B; --warnL:rgba(184,134,11,.10);
+  /* Palette "Cielo delle vacanze": azzurro terso e intenso di mare/montagna + sole e sabbia calda */
+  --mare:#1685C7; --mare-d:#0F5C8C; --sole:#E8A61E;
+  --terracotta:#C8613C; --pineta:#3E9A6D; --foschia:#D4EBFA;
+  --sabbia:#FBF7EF; --carta:#FFFFFF; --inchiostro:#233240; --muted:#5C6975;
+  --brd:#E6E7DF; --brd2:#CCD6D2; --warn:#B8860B; --warnL:rgba(184,134,11,.12);
   --head:'Lexend',sans-serif; --body:'Atkinson Hyperlegible',Helvetica,Arial,sans-serif;
-  --shadow:0 2px 14px rgba(18,85,110,.08); --shadow2:0 6px 28px rgba(18,85,110,.12);
+  --shadow:0 2px 14px rgba(15,92,140,.09); --shadow2:0 6px 28px rgba(15,92,140,.14);
   --maxw:1180px;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{font-family:var(--body);font-size:18px;line-height:1.65;color:var(--inchiostro);
   background:var(--sabbia);
-  background-image:radial-gradient(circle at 90% -10%, rgba(224,165,43,.10), transparent 40%),
-                   radial-gradient(circle at -10% 110%, rgba(28,110,140,.08), transparent 45%);
-  background-attachment:fixed;}
+  background-image:linear-gradient(180deg,#BFE2F7 0%, #D8ECF3 18%, var(--sabbia) 46%),
+                   radial-gradient(circle at 85% 3%, rgba(232,166,30,.16), transparent 32%);
+  background-attachment:fixed;background-repeat:no-repeat;}
 h1,h2,h3{font-family:var(--head);color:var(--mare-d);line-height:1.2}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
 
@@ -51,7 +52,33 @@ h1,h2,h3{font-family:var(--head);color:var(--mare-d);line-height:1.2}
 /* ---------- APP / CARD ---------- */
 main{padding:14px 0 60px}
 .card{background:var(--carta);border:1px solid var(--brd);border-radius:20px;
-  box-shadow:var(--shadow);padding:26px 28px;margin:0 auto;max-width:820px}
+  box-shadow:var(--shadow);padding:28px 34px;margin:0 auto;max-width:1060px}
+/* il testo resta leggibile (~72 caratteri) anche se la card è larga; gli elementi
+   interattivi (mappe, opzioni, tracce) usano tutta la larghezza */
+.card .lead,.card>p,.card .q,.card label,.scaff,.consegna,.box,.figcap,.figura,textarea{max-width:660px}
+.card .lead{max-width:720px}
+/* Sotto-sezioni affiancate su due colonne quando la card è larga (meno scroll) */
+.card.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px;align-items:start}
+.card.grid2>*{grid-column:1/-1}
+.card.grid2>.subsec{grid-column:auto}
+.card.grid2>.subsec.full{grid-column:1/-1}
+.grid2-inner{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;margin-top:8px}
+.grid2-inner .scaff{max-width:none}
+@media(max-width:760px){.grid2-inner{display:block}}
+.card.grid2 .subsec .q,.card.grid2 .subsec textarea,.card.grid2 .subsec .box{max-width:none}
+@media(max-width:860px){.card.grid2{display:block}}
+/* Hero home: banner del cielo delle vacanze con titolo sopra il cielo a sinistra */
+.hero{position:relative;border-radius:22px;overflow:hidden;box-shadow:var(--shadow2);margin:0 auto 20px;max-width:1060px;
+  background:#1E7DC8 url('banner.jpg') center 38%/cover no-repeat;min-height:320px;display:flex;align-items:center}
+.hero::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg, rgba(11,42,72,.5) 0%, rgba(11,42,72,.22) 42%, rgba(11,42,72,0) 68%)}
+.hero-txt{position:relative;z-index:1;padding:36px 44px;max-width:62%}
+.hero-eyebrow{font-family:var(--head);font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;
+  color:#E9F4FD;text-shadow:0 1px 8px rgba(8,32,58,.6)}
+.hero-title{font-family:var(--head);font-weight:700;font-size:46px;line-height:1.04;color:#fff;margin:12px 0 14px;
+  text-shadow:0 2px 16px rgba(8,32,58,.5)}
+.hero-sub{font-size:19px;color:#EAF4FD;text-shadow:0 1px 10px rgba(8,32,58,.6);max-width:440px;margin:0}
+@media(max-width:760px){.hero{min-height:240px} .hero-txt{max-width:100%;padding:24px 24px} .hero-title{font-size:33px}}
 .eyebrow{font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:3px;
   text-transform:uppercase;color:var(--mare)}
 .lead{font-size:19px;color:var(--muted)}
@@ -182,6 +209,27 @@ input[type=text]{padding:11px 13px;border:1px solid var(--brd2);border-radius:11
 .minibtn:hover{border-color:var(--mare)}
 .minibtn.del{color:var(--muted)}
 .minibtn:disabled{opacity:.4;cursor:not-allowed}
+/* Linea del tempo dell'estate (1 giugno → 14 settembre) */
+.tl2wrap{overflow-x:auto;margin-top:16px;padding-bottom:8px}
+.tl2{position:relative;min-width:700px;padding-top:24px}
+.tl2-gline{position:absolute;top:0;bottom:0;width:1px;background:var(--brd);z-index:1}
+.tl2-month{position:absolute;top:2px;height:16px;line-height:16px;border-left:2px solid var(--brd2);font-family:var(--head);font-weight:700;font-size:12.5px;color:var(--mare-d);padding-left:8px;z-index:1}
+.tl2-lane{position:relative;height:82px;border:1px solid var(--brd);border-radius:12px;background:#fff;margin-top:10px;overflow:hidden}
+.tl2-lane .lane-lab{position:absolute;left:9px;top:6px;font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);z-index:3}
+.vac-band{position:absolute;top:36px;height:32px;border-radius:8px;background:rgba(224,166,30,.9);border:1px solid #C68C12;cursor:pointer;display:flex;align-items:center;padding:0 9px;color:#3a2a00;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;min-width:10px;z-index:2}
+.vac-band.sel{outline:2.5px solid var(--mare-d);outline-offset:1px}
+.mom-mark{position:absolute;top:24px;transform:translateX(-50%);cursor:pointer;text-align:center;width:74px;z-index:2}
+.mom-mark .pin{width:32px;height:32px;margin:0 auto;border-radius:50%;background:#fff;border:2px solid var(--mare);display:flex;align-items:center;justify-content:center;color:var(--mare);box-shadow:var(--shadow)}
+.mom-mark .pin svg{width:18px;height:18px}
+.mom-mark.sel .pin{background:var(--mare);color:#fff}
+.mom-mark .cap{font-size:10.5px;line-height:1.15;color:var(--inchiostro);margin-top:3px;max-height:24px;overflow:hidden}
+.tl2-empty{position:absolute;left:50%;top:32px;transform:translateX(-50%);color:var(--muted);font-size:13px;font-style:italic}
+.tl2-add{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.tl2-add button{font-family:var(--head);font-weight:700;font-size:14px;border-radius:11px;padding:10px 16px;cursor:pointer;border:1.5px dashed var(--brd2);background:#fff}
+.tl2-add .av{color:var(--sole);border-color:#E3C98A} .tl2-add .av:hover{border-color:var(--sole)}
+.tl2-add .am{color:var(--mare);} .tl2-add .am:hover{border-color:var(--mare)}
+.tl2-add .ac{color:var(--warn);} .tl2-add .ac:hover{border-color:var(--sole)}
+input[type=date]{font-family:var(--body);font-size:16px;padding:10px 12px;border:1px solid var(--brd2);border-radius:11px;background:#fff;color:var(--inchiostro)}
 /* Checklist (multi-selezione, per le frodi) */
 .checks{display:flex;flex-direction:column;gap:9px;margin-top:8px}
 .checkitem{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--brd2);border-radius:12px;
@@ -287,9 +335,11 @@ const stato = {
   casa:'', meta:'', mezzo:'', kmStima:'', kmReale:'', durataStima:'', durata:'',
   ritornoDove:'', ritornoPerche:'',
   storia:'', sapori:[], giornate:'', postiLocali:'', scopertaVicino:'',
-  momenti:[], colonna:[],
-  digitale:{ dispositivo:'', dispositivoProprio:'', fotoScattate:'', fotoPubblicate:'',
-             percorsoServito:'', percorsoCosa:'', frodi:[], frodiCosaHaiFatto:'', privacy:'' },
+  vacanze:[], momenti:[], colonna:[],
+  digitale:{ dispositivo:'', dispositivoProprio:'', attivita:[], fotoScattate:'', fotoPubblicate:'',
+             tempo:'', equilibrio:'', bufale:'', bufaleCosa:'', gentilezza:'',
+             percorsoServito:'', percorsoCosa:'', frodi:[], frodiCosaHaiFatto:'',
+             privacyRegole:[], privacy:'' },
   compiti:{ aPunto:'', distribuzione:'', comeSuonava:'', comeLiFarei:'' },
   meta_cosaResta:'', meta_racconto:'', meta_diMe:''
 };
@@ -311,7 +361,7 @@ function invia(){
     ritornoDove:stato.ritornoDove, ritornoPerche:stato.ritornoPerche,
     storia:stato.storia, sapori:JSON.stringify(stato.sapori),
     giornate:stato.giornate, postiLocali:stato.postiLocali, scopertaVicino:stato.scopertaVicino,
-    momenti:JSON.stringify(stato.momenti), colonna:JSON.stringify(stato.colonna),
+    vacanze:JSON.stringify(stato.vacanze), momenti:JSON.stringify(stato.momenti), colonna:JSON.stringify(stato.colonna),
     digitale:JSON.stringify(D), compiti:JSON.stringify(K),
     meta_cosaResta:stato.meta_cosaResta, meta_racconto:stato.meta_racconto, meta_diMe:stato.meta_diMe
   });
@@ -367,119 +417,137 @@ function svgMomento(id){
 function svgNota(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>'; }
 function svgFilm(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M17 9h4M3 15h4M17 15h4"/></svg>'; }
 
+/* Estate 2026: 1 giugno → 14 settembre */
+var SUMMER_START=Date.UTC(2026,5,1), SUMMER_END=Date.UTC(2026,8,14);
+var MESI_ESTATE=[{n:'Giugno',t:Date.UTC(2026,5,1)},{n:'Luglio',t:Date.UTC(2026,6,1)},{n:'Agosto',t:Date.UTC(2026,7,1)},{n:'Settembre',t:Date.UTC(2026,8,1)}];
+function fracT(t){ return Math.max(0,Math.min(1,(t-SUMMER_START)/(SUMMER_END-SUMMER_START))); }
+function fracD(s){ if(!s) return null; var p=s.split('-'); if(p.length<3) return null; return fracT(Date.UTC(+p[0],+p[1]-1,+p[2])); }
+function dataIt(s){ if(!s) return ''; var p=s.split('-'); var m=['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic']; return (+p[2])+' '+m[+p[1]-1]; }
+
 function renderMontaggio(app){
   const c=document.createElement('div'); c.className='card';
-  // selezione: {t:'v'|'m', i} oppure null
-  let sel = stato.momenti.length ? {t:'v',i:0} : (stato.colonna.length ? {t:'m',i:0} : null);
+  let sel = stato.vacanze.length?{t:'vac',i:0}:(stato.momenti.length?{t:'mom',i:0}:(stato.colonna.length?{t:'song',i:0}:null));
   c.innerHTML=
     '<div class="eyebrow">Italiano · il tuo racconto</div>'+
-    '<h2>Il montaggio del film dell’estate</h2>'+
+    '<h2>Il film della tua estate</h2>'+
     '<p class="lead">'+dom(
-      'Sei il regista del film della tua estate! Aggiungi le scene sulla traccia Video e le canzoni sulla Colonna sonora.',
-      'Sei tu il regista: monta il film della tua estate come al computer. Metti le scene sulla traccia Video, la musica sulla Colonna sonora, e sistema l’ordine. Stai montando il tuo ricordo in un film.'
+      'Ecco la linea del tempo dell’estate, da giugno al rientro. Metti le tue vacanze e i momenti belli al loro posto!',
+      'Sei il regista: monta il film della tua estate sulla linea del tempo (1 giugno → 14 settembre). Colloca i periodi di vacanza e i momenti che l’hanno resa unica, ognuno alla sua data.'
     )+'</p>'+
-    '<div class="monitor" id="mon"></div>'+
-    '<div class="tracks">'+
-      '<div class="track"><div class="thead vid">'+svgFilm()+'<span>Video</span></div><div class="tbody" id="trkV"></div></div>'+
-      '<div class="track"><div class="thead aud">'+svgNota()+'<span>Colonna sonora</span></div><div class="tbody" id="trkM"></div></div>'+
+    '<div class="tl2wrap"><div class="tl2" id="tl2">'+
+      '<div class="tl2-lane" id="laneVac"><span class="lane-lab">Le mie vacanze</span></div>'+
+      '<div class="tl2-lane" id="laneMom"><span class="lane-lab">I momenti</span></div>'+
+    '</div></div>'+
+    '<div class="tl2-add">'+
+      '<button class="av" id="addVac">+ '+dom('vacanza','periodo di vacanza')+'</button>'+
+      '<button class="am" id="addMom">+ '+dom('momento','momento')+'</button>'+
+      '<button class="ac" id="addSong">+ '+dom('canzone','canzone')+'</button>'+
     '</div>'+
+    '<div class="monitor" id="mon"></div>'+
     '<div id="tlEditor"></div>'+
+    '<div class="tracks" style="margin-top:16px"><div class="track"><div class="thead aud">'+svgNota()+'<span>Colonna sonora</span></div><div class="tbody" id="trkM"></div></div></div>'+
     '<div class="scaff"><div class="lbl">Aiuti per il tuo film</div><ul>'+
       dom(
-        ['Il momento che ricorderò è…','Cosa hai visto, sentito, assaggiato?','Che canzone ti ricorda quest’estate?'],
-        ['«Il momento che ricorderò è…», «Non me l’aspettavo, ma…»','I 5 sensi: cosa hai visto, sentito, odorato, gustato, toccato?','La colonna sonora: quali canzoni o artisti hanno accompagnato la tua estate?']
+        ['Quando sei stato in vacanza? Segnalo sulla linea.','Il momento che ricorderò è…','Che canzone ti ricorda quest’estate?'],
+        ['Segna prima i periodi di vacanza, poi i singoli momenti alla loro data.','«Il momento che ricorderò è…», «Non me l’aspettavo, ma…»','I 5 sensi, e la colonna sonora: quali canzoni hanno accompagnato l’estate?']
       ).map(g=>'<li>'+g+'</li>').join('')+'</ul></div>'+
     '<div class="consegna"><div class="lbl">L’idea diventa azione</div>'+
-      dom('Racconta il tuo film a un compagno seguendo l’ordine delle scene.','Prova a raccontare il tuo film seguendo l’ordine delle scene: deve filare come una storia, con la sua musica.')+'</div>'+
+      dom('Racconta la tua estate seguendo la linea del tempo, da giugno a settembre.','Racconta la tua estate seguendo la linea del tempo: deve filare come una storia, con la sua musica.')+'</div>'+
     '<div class="tappa-foot"><button class="btn avanti" id="tlNext">Continua</button></div>';
   app.appendChild(c);
 
-  const mon=c.querySelector('#mon'), trkV=c.querySelector('#trkV'), trkM=c.querySelector('#trkM'), ed=c.querySelector('#tlEditor');
+  const laneVac=c.querySelector('#laneVac'), laneMom=c.querySelector('#laneMom'),
+        mon=c.querySelector('#mon'), ed=c.querySelector('#tlEditor'), trkM=c.querySelector('#trkM');
 
-  function drawMonitor(){
-    if(!sel){ mon.className='monitor empty';
-      mon.innerHTML='<div class="mico">'+svgFilm()+'</div><h4>'+dom('Il tuo film è vuoto','Il tuo film è ancora vuoto')+'</h4><div class="mtxt">'+dom('Aggiungi la prima scena qui sotto.','Aggiungi una scena o una canzone dalle tracce qui sotto.')+'</div>'; return; }
-    mon.className='monitor';
-    if(sel.t==='v'){ const mo=stato.momenti[sel.i];
-      mon.innerHTML='<div class="mico">'+svgMomento(mo.tipo||'arrivo')+'</div>'+
-        '<div class="mmeta">Scena '+(sel.i+1)+' di '+stato.momenti.length+'</div>'+
-        '<h4>'+(mo.titolo?escHtml(mo.titolo):dom('Senza titolo','Scena senza titolo'))+'</h4>'+
-        '<div class="mtxt">'+(mo.testo?escHtml(mo.testo):'')+'</div>';
-    } else { const so=stato.colonna[sel.i];
-      mon.innerHTML='<div class="mico">'+svgNota()+'</div><div class="mmeta">Colonna sonora</div>'+
-        '<h4>'+(so.titolo?escHtml(so.titolo):dom('Una canzone','Canzone senza titolo'))+'</h4>'+
-        '<div class="mtxt">'+(so.artista?escHtml(so.artista):'')+'</div>';
-    }
-  }
-  function drawTracks(){
-    trkV.innerHTML='';
-    stato.momenti.forEach((mo,i)=>{
-      const el=document.createElement('button');
-      el.className='vclip'+(sel&&sel.t==='v'&&sel.i===i?' sel':'');
-      el.innerHTML='<span class="num">'+(i+1)+'</span><span class="ci">'+svgMomento(mo.tipo||'arrivo')+'</span>'+
-        '<span class="ct">'+(mo.titolo?escHtml(mo.titolo):'<span class="placeholder">senza titolo</span>')+'</span>';
-      el.onclick=()=>{ sel={t:'v',i:i}; redraw(); };
-      trkV.appendChild(el);
+  function drawTimeline(){
+    const tl2=c.querySelector('#tl2');
+    tl2.querySelectorAll('.tl2-month').forEach(e=>e.remove());
+    laneVac.querySelectorAll('.vac-band,.tl2-empty,.tl2-gline').forEach(e=>e.remove());
+    laneMom.querySelectorAll('.mom-mark,.tl2-empty,.tl2-gline').forEach(e=>e.remove());
+    MESI_ESTATE.forEach((m,idx)=>{
+      const f=fracT(m.t)*100;
+      const lab=document.createElement('div'); lab.className='tl2-month'; lab.style.left=f+'%'; lab.textContent=m.n; tl2.appendChild(lab);
+      if(idx>0)[laneVac,laneMom].forEach(L=>{ const gl=document.createElement('div'); gl.className='tl2-gline'; gl.style.left=f+'%'; L.appendChild(gl); });
     });
-    const addV=document.createElement('button'); addV.className='trackadd vid';
-    addV.textContent='+ '+dom('scena','scena');
-    addV.onclick=()=>{ stato.momenti.push({tipo:'arrivo',titolo:'',testo:''}); sel={t:'v',i:stato.momenti.length-1}; salva(); redraw(); };
-    trkV.appendChild(addV);
-
+    if(!stato.vacanze.length){ const e=document.createElement('div'); e.className='tl2-empty'; e.textContent=dom('Aggiungi una vacanza','Nessun periodo di vacanza'); laneVac.appendChild(e); }
+    stato.vacanze.forEach((v,i)=>{
+      const a=fracD(v.inizio), b=fracD(v.fine); const left=(a==null?0:a)*100, right=(b==null?(a==null?0:a):b)*100;
+      const el=document.createElement('button'); el.className='vac-band'+(sel&&sel.t==='vac'&&sel.i===i?' sel':'');
+      el.style.left=left+'%'; el.style.width=Math.max(right-left,1.5)+'%'; el.textContent=v.luogo||dom('vacanza','vacanza');
+      el.onclick=()=>{ sel={t:'vac',i:i}; redraw(); }; laneVac.appendChild(el);
+    });
+    if(!stato.momenti.length){ const e=document.createElement('div'); e.className='tl2-empty'; e.textContent=dom('Aggiungi un momento','Nessun momento'); laneMom.appendChild(e); }
+    stato.momenti.forEach((mo,i)=>{
+      const f=fracD(mo.data); const el=document.createElement('button'); el.className='mom-mark'+(sel&&sel.t==='mom'&&sel.i===i?' sel':'');
+      el.style.left=(f==null?50:f*100)+'%';
+      el.innerHTML='<span class="pin">'+svgMomento(mo.tipo||'arrivo')+'</span><span class="cap">'+(mo.titolo?escHtml(mo.titolo):'')+'</span>';
+      el.onclick=()=>{ sel={t:'mom',i:i}; redraw(); }; laneMom.appendChild(el);
+    });
+  }
+  function drawMusic(){
     trkM.innerHTML='';
     stato.colonna.forEach((so,i)=>{
-      const el=document.createElement('button');
-      el.className='mclip'+(sel&&sel.t==='m'&&sel.i===i?' sel':'');
+      const el=document.createElement('button'); el.className='mclip'+(sel&&sel.t==='song'&&sel.i===i?' sel':'');
       el.innerHTML=svgNota()+'<span class="mt">'+(so.titolo?escHtml(so.titolo):'<span class="placeholder">canzone</span>')+'</span>';
-      el.onclick=()=>{ sel={t:'m',i:i}; redraw(); };
-      trkM.appendChild(el);
+      el.onclick=()=>{ sel={t:'song',i:i}; redraw(); }; trkM.appendChild(el);
     });
-    const addM=document.createElement('button'); addM.className='trackadd aud';
-    addM.textContent='+ '+dom('canzone','canzone');
-    addM.onclick=()=>{ stato.colonna.push({titolo:'',artista:''}); sel={t:'m',i:stato.colonna.length-1}; salva(); redraw(); };
-    trkM.appendChild(addM);
+    const add=document.createElement('button'); add.className='trackadd aud'; add.textContent='+ '+dom('canzone','canzone');
+    add.onclick=()=>{ stato.colonna.push({titolo:'',artista:''}); sel={t:'song',i:stato.colonna.length-1}; salva(); redraw(); };
+    trkM.appendChild(add);
   }
+  function drawMonitor(){
+    if(!sel){ mon.className='monitor empty'; mon.innerHTML='<div class="mico">'+svgFilm()+'</div><h4>'+dom('La tua estate è ancora vuota','Il tuo film è ancora vuoto')+'</h4><div class="mtxt">'+dom('Aggiungi una vacanza o un momento qui sopra.','Aggiungi un periodo di vacanza, un momento o una canzone.')+'</div>'; return; }
+    mon.className='monitor';
+    if(sel.t==='vac'){ const v=stato.vacanze[sel.i];
+      mon.innerHTML='<div class="mico">'+svgMomento('arrivo')+'</div><div class="mmeta">Vacanza</div><h4>'+(v.luogo?escHtml(v.luogo):dom('Dove?','Un luogo'))+'</h4><div class="mtxt">'+((v.inizio||v.fine)?(dataIt(v.inizio)+(v.fine?' → '+dataIt(v.fine):'')):'')+'</div>';
+    } else if(sel.t==='mom'){ const mo=stato.momenti[sel.i];
+      mon.innerHTML='<div class="mico">'+svgMomento(mo.tipo||'arrivo')+'</div><div class="mmeta">Momento'+(mo.data?' · '+dataIt(mo.data):'')+'</div><h4>'+(mo.titolo?escHtml(mo.titolo):dom('Senza titolo','Momento senza titolo'))+'</h4><div class="mtxt">'+(mo.testo?escHtml(mo.testo):'')+'</div>';
+    } else { const so=stato.colonna[sel.i];
+      mon.innerHTML='<div class="mico">'+svgNota()+'</div><div class="mmeta">Colonna sonora</div><h4>'+(so.titolo?escHtml(so.titolo):dom('Una canzone','Canzone'))+'</h4><div class="mtxt">'+(so.artista?escHtml(so.artista):'')+'</div>';
+    }
+  }
+  function di(id,val){ return '<input type="date" id="'+id+'" min="2026-06-01" max="2026-09-14" value="'+(val||'')+'">'; }
   function drawEditor(){
     if(!sel){ ed.innerHTML=''; return; }
-    if(sel.t==='v'){
-      const mo=stato.momenti[sel.i];
+    if(sel.t==='vac'){ const v=stato.vacanze[sel.i];
+      ed.innerHTML='<div class="clip-editor"><div class="q">'+dom('Dove sei stato in vacanza?','Il periodo di vacanza')+'</div>'+
+        '<div class="field"><label>Luogo</label><input type="text" id="vLuogo" placeholder="'+dom('es. dai nonni al mare','es. Val di Fassa')+'"></div>'+
+        '<div class="field"><label>Dal</label>'+di('vDal',v.inizio)+'</div><div class="field"><label>Al</label>'+di('vAl',v.fine)+'</div>'+
+        '<div class="row"><span></span><button class="minibtn del" id="vDel">Elimina vacanza</button></div></div>';
+      const lu=ed.querySelector('#vLuogo'); lu.value=v.luogo||''; lu.oninput=()=>{ v.luogo=lu.value; salva(); drawTimeline(); drawMonitor(); };
+      ed.querySelector('#vDal').onchange=(e)=>{ v.inizio=e.target.value; salva(); drawTimeline(); drawMonitor(); };
+      ed.querySelector('#vAl').onchange=(e)=>{ v.fine=e.target.value; salva(); drawTimeline(); drawMonitor(); };
+      ed.querySelector('#vDel').onclick=()=>{ stato.vacanze.splice(sel.i,1); sel=stato.vacanze.length?{t:'vac',i:Math.min(sel.i,stato.vacanze.length-1)}:null; salva(); redraw(); };
+    } else if(sel.t==='mom'){ const mo=stato.momenti[sel.i];
       ed.innerHTML='<div class="clip-editor"><div class="q">Che tipo di momento è?</div><div class="opts" id="tlTipi"></div>'+
-        '<div class="field" style="margin-top:14px"><label>Titolo della scena</label><input type="text" id="tlTit" placeholder="'+dom('es. Il primo bagno','Dai un titolo a questa scena')+'"></div>'+
-        '<div class="field"><label>Raccontala</label><textarea id="tlTxt" placeholder="'+dom('Che cosa è successo?','Descrivi la scena…')+'"></textarea></div>'+
-        '<div class="row"><div class="left"><button class="minibtn" id="tlLeft">‹ sposta</button><button class="minibtn" id="tlRight">sposta ›</button></div>'+
-        '<button class="minibtn del" id="tlDel">Elimina scena</button></div></div>';
+        '<div class="field" style="margin-top:14px"><label>Quando?</label>'+di('mData',mo.data)+'</div>'+
+        '<div class="field"><label>Titolo</label><input type="text" id="tlTit" placeholder="'+dom('es. Il primo bagno','Dai un titolo a questo momento')+'"></div>'+
+        '<div class="field"><label>Raccontalo</label><textarea id="tlTxt" placeholder="'+dom('Che cosa è successo?','Descrivi il momento…')+'"></textarea></div>'+
+        '<div class="row"><span></span><button class="minibtn del" id="tlDel">Elimina momento</button></div></div>';
       const tipi=ed.querySelector('#tlTipi');
-      TIPI_MOMENTO.forEach(t=>{ const b=document.createElement('button');
-        b.className='opt'+(mo.tipo===t.id?' sel':''); b.dataset.t=t.id;
+      TIPI_MOMENTO.forEach(t=>{ const b=document.createElement('button'); b.className='opt'+(mo.tipo===t.id?' sel':''); b.dataset.t=t.id;
         b.innerHTML=svgMomento(t.id)+'<span>'+t.label+'</span>';
-        b.onclick=()=>{ mo.tipo=t.id; salva(); tipi.querySelectorAll('.opt').forEach(x=>x.classList.toggle('sel',x.dataset.t===t.id)); drawTracks(); drawMonitor(); };
+        b.onclick=()=>{ mo.tipo=t.id; salva(); tipi.querySelectorAll('.opt').forEach(x=>x.classList.toggle('sel',x.dataset.t===t.id)); drawTimeline(); drawMonitor(); };
         tipi.appendChild(b); });
-      const tit=ed.querySelector('#tlTit'); tit.value=mo.titolo||''; tit.oninput=()=>{ mo.titolo=tit.value; salva(); drawTracks(); drawMonitor(); };
+      ed.querySelector('#mData').onchange=(e)=>{ mo.data=e.target.value; salva(); drawTimeline(); drawMonitor(); };
+      const tit=ed.querySelector('#tlTit'); tit.value=mo.titolo||''; tit.oninput=()=>{ mo.titolo=tit.value; salva(); drawTimeline(); drawMonitor(); };
       const txt=ed.querySelector('#tlTxt'); txt.value=mo.testo||''; txt.oninput=()=>{ mo.testo=txt.value; salva(); drawMonitor(); };
-      const L=ed.querySelector('#tlLeft'), R=ed.querySelector('#tlRight');
-      L.disabled=sel.i===0; R.disabled=sel.i===stato.momenti.length-1;
-      L.onclick=()=>{ if(sel.i>0){ swapV(sel.i,sel.i-1); sel.i--; salva(); redraw(); } };
-      R.onclick=()=>{ if(sel.i<stato.momenti.length-1){ swapV(sel.i,sel.i+1); sel.i++; salva(); redraw(); } };
-      ed.querySelector('#tlDel').onclick=()=>{ stato.momenti.splice(sel.i,1); sel = stato.momenti.length ? {t:'v',i:Math.min(sel.i,stato.momenti.length-1)} : null; salva(); redraw(); };
-    } else {
-      const so=stato.colonna[sel.i];
+      ed.querySelector('#tlDel').onclick=()=>{ stato.momenti.splice(sel.i,1); sel=stato.momenti.length?{t:'mom',i:Math.min(sel.i,stato.momenti.length-1)}:null; salva(); redraw(); };
+    } else { const so=stato.colonna[sel.i];
       ed.innerHTML='<div class="clip-editor"><div class="q">'+dom('Che canzone hai ascoltato?','La canzone della tua estate')+'</div>'+
         '<div class="field"><label>Titolo della canzone</label><input type="text" id="mTit" placeholder="'+dom('es. la canzone dell’estate','Titolo del brano')+'"></div>'+
         '<div class="field"><label>Artista '+dom('(se lo sai)','(cantante o gruppo)')+'</label><input type="text" id="mArt" placeholder="'+dom('chi la canta?','Artista o gruppo')+'"></div>'+
-        '<div class="row"><div class="left"><button class="minibtn" id="mLeft">‹ sposta</button><button class="minibtn" id="mRight">sposta ›</button></div>'+
-        '<button class="minibtn del" id="mDel">Togli canzone</button></div></div>';
-      const t1=ed.querySelector('#mTit'); t1.value=so.titolo||''; t1.oninput=()=>{ so.titolo=t1.value; salva(); drawTracks(); drawMonitor(); };
+        '<div class="row"><span></span><button class="minibtn del" id="sDel">Togli canzone</button></div></div>';
+      const t1=ed.querySelector('#mTit'); t1.value=so.titolo||''; t1.oninput=()=>{ so.titolo=t1.value; salva(); drawMusic(); drawMonitor(); };
       const t2=ed.querySelector('#mArt'); t2.value=so.artista||''; t2.oninput=()=>{ so.artista=t2.value; salva(); drawMonitor(); };
-      const L=ed.querySelector('#mLeft'), R=ed.querySelector('#mRight');
-      L.disabled=sel.i===0; R.disabled=sel.i===stato.colonna.length-1;
-      L.onclick=()=>{ if(sel.i>0){ swapM(sel.i,sel.i-1); sel.i--; salva(); redraw(); } };
-      R.onclick=()=>{ if(sel.i<stato.colonna.length-1){ swapM(sel.i,sel.i+1); sel.i++; salva(); redraw(); } };
-      ed.querySelector('#mDel').onclick=()=>{ stato.colonna.splice(sel.i,1); sel = stato.colonna.length ? {t:'m',i:Math.min(sel.i,stato.colonna.length-1)} : (stato.momenti.length?{t:'v',i:0}:null); salva(); redraw(); };
+      ed.querySelector('#sDel').onclick=()=>{ stato.colonna.splice(sel.i,1); sel=stato.colonna.length?{t:'song',i:Math.min(sel.i,stato.colonna.length-1)}:null; salva(); redraw(); };
     }
   }
-  function swapV(a,b){ const t=stato.momenti[a]; stato.momenti[a]=stato.momenti[b]; stato.momenti[b]=t; }
-  function swapM(a,b){ const t=stato.colonna[a]; stato.colonna[a]=stato.colonna[b]; stato.colonna[b]=t; }
-  function redraw(){ drawMonitor(); drawTracks(); drawEditor(); }
+  function redraw(){ drawTimeline(); drawMusic(); drawMonitor(); drawEditor(); }
+
+  c.querySelector('#addVac').onclick=()=>{ stato.vacanze.push({luogo:'',inizio:'',fine:''}); sel={t:'vac',i:stato.vacanze.length-1}; salva(); redraw(); };
+  c.querySelector('#addMom').onclick=()=>{ stato.momenti.push({tipo:'arrivo',titolo:'',testo:'',data:''}); sel={t:'mom',i:stato.momenti.length-1}; salva(); redraw(); };
+  c.querySelector('#addSong').onclick=()=>{ stato.colonna.push({titolo:'',artista:''}); sel={t:'song',i:stato.colonna.length-1}; salva(); redraw(); };
 
   redraw();
   c.querySelector('#tlNext').onclick=()=>{ const i=tappe.findIndex(t=>t.id==='montaggio'); if(tappe[i+1]) vai(tappe[i+1].id); };
@@ -546,12 +614,16 @@ function renderInArrivo(app){
 }
 
 function renderAvvio(app){
+  const hero=document.createElement('div'); hero.className='hero';
+  hero.innerHTML=
+    '<div class="hero-txt">'+
+      '<div class="hero-eyebrow">Scuola Sacra Famiglia · Rientro a settembre</div>'+
+      '<h1 class="hero-title">Il mio diario<br>di viaggio</h1>'+
+      '<p class="hero-sub">«Il viaggio comincia quando lo ricordi.»</p>'+
+    '</div>';
+  app.appendChild(hero);
   const c=document.createElement('div'); c.className='card';
   c.innerHTML=
-    '<div class="eyebrow">Scuola Sacra Famiglia · Rientro a settembre</div>'+
-    '<h1>Il mio diario di viaggio</h1>'+
-    '<p class="lead">«Il viaggio comincia quando lo ricordi.»</p>'+
-
     '<div class="field"><label for="nick">Come ti chiami? (il tuo nome o soprannome)</label>'+
     '<input type="text" id="nick" autocomplete="off" placeholder="es. Emanuele"></div>'+
 
@@ -913,15 +985,30 @@ function svgFrode(id){
 }
 function svgCheck(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>'; }
 
+const ATTIVITA=[
+  {id:'giochi',label:'Videogiochi'},{id:'video',label:'Video, film o serie'},
+  {id:'musica',label:'Ascoltato musica'},{id:'chat',label:'Chat o videochiamate'},
+  {id:'social',label:'Social (guardati o pubblicati)'},{id:'ricerca',label:'Cercato cose / studiato'},
+  {id:'creato',label:'Creato foto, video o disegni'}
+];
+const PRIVACY_REGOLE=[
+  {id:'nofoto',label:'Non ho pubblicato foto della vacanza mentre eravamo ancora fuori casa'},
+  {id:'nopartenza',label:'Non ho detto a tutti quando partivamo e quando tornavamo'},
+  {id:'nowifi',label:'Ho evitato le wifi pubbliche non protette'},
+  {id:'noindirizzo',label:'Non ho condiviso l’indirizzo di casa o dove eravamo di preciso'},
+  {id:'profili',label:'Ho controllato chi può vedere le mie foto (profili privati)'}
+];
+
 function renderDigitale(app){
-  const c=document.createElement('div'); c.className='card';
+  const c=document.createElement('div'); c.className='card grid2';
   const D=stato.digitale;
+  const scaleRow=(id,opts)=>'<div class="radios scale" id="'+id+'">'+opts.map(o=>'<button class="radio '+(o[2]||'')+'" data-v="'+o[0]+'">'+o[1]+'</button>').join('')+'</div>';
   c.innerHTML=
     '<div class="eyebrow dig">Cittadinanza digitale</div>'+
     '<h2>L’estate digitale</h2>'+
     '<p class="lead">'+dom(
-      'Quest’estate hai giocato, guardato video, scattato foto? Raccontami com’è andata nel mondo digitale.',
-      'Quest’estate il tuo iPad era più libero, senza il profilo della scuola: più libertà, più responsabilità. Com’è andata online?'
+      'Quest’estate hai giocato, guardato video, scattato foto? Raccontami com’è andata nel mondo digitale, senza paura di dire la verità.',
+      'Quest’estate il tuo iPad era più libero, senza il profilo della scuola: più libertà, più responsabilità. Com’è andata online? Rispondi con sincerità: qui non si giudica.'
     )+'</p>'+
 
     '<div class="subsec"><h3>Il tuo digitale d’estate</h3>'+
@@ -933,79 +1020,96 @@ function renderDigitale(app){
         : '')+
     '</div>'+
 
+    '<div class="subsec"><h3>Cosa hai fatto online?</h3>'+
+      '<p>'+dom('Segna quello che hai fatto di più.','Segna le attività che hai fatto di più (puoi sceglierne più di una).')+'</p>'+
+      '<div class="checks" id="dAtt"></div></div>'+
+
     '<div class="subsec"><h3>Le foto</h3>'+
       '<p class="q">'+dom('Più o meno, quante foto hai scattato?','Quante foto hai scattato, più o meno?')+'</p>'+
       '<input type="text" id="dScatt" class="num" inputmode="numeric" placeholder="quante?">'+
       '<p class="q" style="margin-top:14px">'+dom('E quante ne hai messe online o mandate?','E quante ne hai pubblicate o condivise?')+'</p>'+
       '<input type="text" id="dPubb" class="num" inputmode="numeric" placeholder="quante?">'+
-      '<div class="box">'+dom('Prima di mettere online una foto, fermati un attimo: c’è qualcun altro nella foto? Gli va bene?','Prima di pubblicare una foto, chiediti: chi c’è nella foto è d’accordo? Cosa racconta di me e degli altri?')+'</div>'+
-    '</div>'+
+      '<div class="box">'+dom('Prima di mettere online una foto: c’è qualcun altro nella foto? Gli va bene?','Prima di pubblicare una foto, chiediti: chi c’è nella foto è d’accordo? Cosa racconta di me e degli altri?')+'</div></div>'+
 
-    '<div class="subsec"><h3>Quello che abbiamo imparato è servito?</h3>'+
-      '<p class="q">'+dom('Ti sei ricordato qualcosa di cittadinanza digitale?','Durante l’estate ti è tornato utile qualcosa del percorso di cittadinanza digitale?')+'</p>'+
-      '<div class="radios scale" id="dServ">'+
-        '<button class="radio ok" data-v="tanto">Sì, tanto</button>'+
-        '<button class="radio mid" data-v="abbastanza">Abbastanza</button>'+
-        '<button class="radio low" data-v="poco">Poco</button></div>'+
-      '<p class="q" style="margin-top:12px">'+dom('Che cosa ti sei ricordato?','Che cosa, in particolare?')+'</p>'+
-      '<textarea id="dCosa" placeholder="'+dom('Mi sono ricordato che…','Mi è tornato utile…')+'"></textarea>'+
-    '</div>'+
+    '<div class="subsec"><h3>Tempo ed equilibrio</h3>'+
+      '<p class="q">'+dom('Quanto tempo sei stato sugli schermi?','Quanto tempo hai passato davanti agli schermi?')+'</p>'+
+      scaleRow('dTempo',[['poco','Poco'],['giusto','Il giusto'],['tanto','Tanto']])+
+      '<p class="q" style="margin-top:14px">'+dom('Sei riuscito a staccare e fare anche altro?','Sei riuscito a staccare e dedicarti anche ad altro?')+'</p>'+
+      scaleRow('dEqui',[['si','Sì','ok'],['abbastanza','Abbastanza','mid'],['poco','Poco','low']])+'</div>'+
+
+    '<div class="subsec"><h3>Bufale e notizie false</h3>'+
+      '<p class="q">'+dom('Ti è capitato di vedere una notizia falsa o una bufala?','Ti sei imbattuto in notizie false, bufale o catene?')+'</p>'+
+      scaleRow('dBuf',[['si','Sì'],['forse','Forse'],['no','No']])+
+      '<p class="q" style="margin-top:12px">'+dom('Come hai capito che era falsa?','Come hai fatto a capirlo? L’hai verificata?')+'</p>'+
+      '<textarea id="dBufC" placeholder="'+dom('Ho capito perché…','Ho controllato…')+'"></textarea></div>'+
+
+    '<div class="subsec"><h3>Gentilezza online</h3>'+
+      '<p>'+dom('Online ci si può ferire con le parole. Ti va di raccontare?','La rete può essere gentile o cattiva. Qui puoi raccontare in libertà.')+'</p>'+
+      '<p class="q">'+dom('Hai visto o ricevuto cattiverie? Tu come ti sei comportato?','Hai assistito o subito offese o prese in giro (cyberbullismo)? Come hai reagito?')+'</p>'+
+      '<textarea id="dGent" placeholder="'+dom('È successo che…','Mi è capitato di… e io…')+'"></textarea></div>'+
 
     '<div class="subsec"><h3>Ti sei imbattuto in qualche trappola?</h3>'+
       '<p>'+dom('Segna se ti è capitata una di queste cose. Non è colpa di nessuno: serve a imparare.','Segna cosa hai incontrato online. Nessun giudizio: raccontarlo serve a riconoscerlo la prossima volta.')+'</p>'+
       '<div class="checks" id="dFrodi"></div>'+
       '<p class="q" style="margin-top:14px">'+dom('Se ti è capitato, che cosa hai fatto?','Se ti è capitato, come hai reagito?')+'</p>'+
-      '<textarea id="dFatto" placeholder="'+dom('Ho…','Quando è successo, io…')+'"></textarea>'+
-    '</div>'+
+      '<textarea id="dFatto" placeholder="'+dom('Ho…','Quando è successo, io…')+'"></textarea></div>'+
 
-    '<div class="subsec"><h3>La privacy tua e della tua famiglia</h3>'+
-      '<p class="q">'+dom('Hai protetto le tue informazioni e quelle della tua famiglia? Come?','Come hai protetto i tuoi dati e quelli della tua famiglia?')+'</p>'+
-      '<textarea id="dPriv" placeholder="'+dom('Ho fatto attenzione a…','Per proteggere la privacy ho…')+'"></textarea>'+
-    '</div>'+
+    '<div class="subsec"><h3>È servito quello che abbiamo imparato?</h3>'+
+      '<p class="q">'+dom('Ti sei ricordato qualcosa di cittadinanza digitale?','Ti è tornato utile qualcosa del percorso di cittadinanza digitale?')+'</p>'+
+      scaleRow('dServ',[['tanto','Sì, tanto','ok'],['abbastanza','Abbastanza','mid'],['poco','Poco','low']])+
+      '<p class="q" style="margin-top:12px">'+dom('Che cosa ti sei ricordato?','Che cosa, in particolare?')+'</p>'+
+      '<textarea id="dCosa" placeholder="'+dom('Mi sono ricordato che…','Mi è tornato utile…')+'"></textarea></div>'+
+
+    '<div class="subsec full"><h3>La privacy della tua famiglia</h3>'+
+      '<p>'+dom('Quando si è in vacanza bisogna stare attenti: certe informazioni possono finire nelle mani sbagliate. Vediamo le buone regole.','In vacanza la privacy della famiglia è delicata: dire troppo online può finire nelle mani sbagliate. Ecco le buone regole — segna quelle che hai seguito.')+'</p>'+
+      '<div class="grid2-inner">'+
+        '<div><div class="q">Hai seguito queste buone regole?</div><div class="checks" id="dPrivR"></div></div>'+
+        '<div class="scaff"><div class="lbl">Come scriverlo</div>'+
+          '<p class="q" style="margin-top:4px">'+dom('Racconta come hai protetto la tua famiglia.','Racconta come hai protetto te e la tua famiglia.')+'</p>'+
+          '<textarea id="dPriv" placeholder="'+dom('Per proteggere la mia famiglia ho…','Per proteggere la mia famiglia ho…')+'"></textarea>'+
+          '<ul style="margin:10px 0 0;padding-left:18px;font-size:14px;color:var(--muted)">'+
+            '<li>«Una regola che voglio ricordare è…»</li>'+
+            '<li>«La prossima volta farò attenzione a…»</li></ul>'+
+        '</div>'+
+      '</div></div>'+
 
     '<div class="consegna"><div class="lbl">L’idea diventa azione</div>'+
-      dom('Racconta a casa una cosa che hai imparato su come stare sicuri online.','Scegli una regola di sicurezza che vuoi tenere per il nuovo anno e scrivila.')+'</div>'+
+      dom('Racconta a casa una regola per stare sicuri online, e mettetela in pratica insieme.','Scegli una regola di sicurezza da tenere per il nuovo anno e condividila con la tua famiglia.')+'</div>'+
     '<div class="tappa-foot"><button class="btn avanti" id="dNext">Continua</button></div>';
   app.appendChild(c);
 
   const $=s=>c.querySelector(s);
   const bindD=(el,key)=>{ el.value=D[key]||''; el.oninput=()=>{ D[key]=el.value; salva(); }; };
   bindD($('#dDisp'),'dispositivo'); bindD($('#dScatt'),'fotoScattate'); bindD($('#dPubb'),'fotoPubblicate');
-  bindD($('#dCosa'),'percorsoCosa'); bindD($('#dFatto'),'frodiCosaHaiFatto'); bindD($('#dPriv'),'privacy');
+  bindD($('#dBufC'),'bufaleCosa'); bindD($('#dGent'),'gentilezza'); bindD($('#dCosa'),'percorsoCosa');
+  bindD($('#dFatto'),'frodiCosaHaiFatto'); bindD($('#dPriv'),'privacy');
 
-  if($('#dPropr')) $('#dPropr').querySelectorAll('.radio').forEach(b=>{
-    b.classList.toggle('sel', D.dispositivoProprio===b.dataset.v);
-    b.onclick=()=>{ D.dispositivoProprio=b.dataset.v; salva();
-      $('#dPropr').querySelectorAll('.radio').forEach(x=>x.classList.toggle('sel',x.dataset.v===b.dataset.v)); };
-  });
-  $('#dServ').querySelectorAll('.radio').forEach(b=>{
-    b.classList.toggle('sel', D.percorsoServito===b.dataset.v);
-    b.onclick=()=>{ D.percorsoServito=b.dataset.v; salva();
-      $('#dServ').querySelectorAll('.radio').forEach(x=>x.classList.toggle('sel',x.dataset.v===b.dataset.v)); };
-  });
+  function scale(sel,key){ const bx=$(sel); if(!bx) return; bx.querySelectorAll('.radio').forEach(b=>{
+    b.classList.toggle('sel', D[key]===b.dataset.v);
+    b.onclick=()=>{ D[key]=b.dataset.v; salva(); bx.querySelectorAll('.radio').forEach(x=>x.classList.toggle('sel',x.dataset.v===b.dataset.v)); }; }); }
+  scale('#dPropr','dispositivoProprio'); scale('#dTempo','tempo'); scale('#dEqui','equilibrio');
+  scale('#dBuf','bufale'); scale('#dServ','percorsoServito');
 
-  const box=$('#dFrodi');
-  FRODI.forEach(f=>{
-    const b=document.createElement('button');
-    b.className='checkitem'+(D.frodi.indexOf(f.id)>=0?' sel':''); b.dataset.f=f.id;
-    b.innerHTML=svgFrode(f.id)+'<span class="lab">'+f.label+'</span><span class="bx">'+svgCheck()+'</span>';
-    b.onclick=()=>{
-      const on=D.frodi.indexOf(f.id)>=0;
-      if(f.id==='niente'){ D.frodi = on ? [] : ['niente']; }
-      else { D.frodi = D.frodi.filter(x=>x!=='niente');
-        if(on) D.frodi=D.frodi.filter(x=>x!==f.id); else D.frodi.push(f.id); }
-      salva();
-      box.querySelectorAll('.checkitem').forEach(x=>x.classList.toggle('sel', D.frodi.indexOf(x.dataset.f)>=0));
-    };
-    box.appendChild(b);
-  });
+  function chkList(sel,items,arr,exclusive){ const bx=$(sel);
+    items.forEach(it=>{ const b=document.createElement('button');
+      b.className='checkitem'+(arr.indexOf(it.id)>=0?' sel':''); b.dataset.k=it.id;
+      b.innerHTML=(it.icon||'')+'<span class="lab">'+it.label+'</span><span class="bx">'+svgCheck()+'</span>';
+      b.onclick=()=>{ const on=arr.indexOf(it.id)>=0;
+        if(exclusive && it.id===exclusive){ arr.length=0; if(!on) arr.push(it.id); }
+        else { const ei=arr.indexOf(exclusive); if(ei>=0) arr.splice(ei,1);
+          if(on) arr.splice(arr.indexOf(it.id),1); else arr.push(it.id); }
+        salva(); bx.querySelectorAll('.checkitem').forEach(x=>x.classList.toggle('sel', arr.indexOf(x.dataset.k)>=0)); };
+      bx.appendChild(b); }); }
+  chkList('#dAtt',ATTIVITA,D.attivita);
+  chkList('#dFrodi',FRODI.map(f=>({id:f.id,label:f.label,icon:svgFrode(f.id)})),D.frodi,'niente');
+  chkList('#dPrivR',PRIVACY_REGOLE,D.privacyRegole);
 
   $('#dNext').onclick=()=>{ const i=tappe.findIndex(t=>t.id==='digitale'); if(tappe[i+1]) vai(tappe[i+1].id); };
 }
 
 /* ===== I compiti delle vacanze (didattico + opinione) ===== */
 function renderCompiti(app){
-  const c=document.createElement('div'); c.className='card';
+  const c=document.createElement('div'); c.className='card grid2';
   const K=stato.compiti;
   c.innerHTML=
     '<div class="eyebrow">Facciamo il punto</div>'+
@@ -1098,11 +1202,18 @@ function buildDiarioStampa(){
     h+=riga('I miei posti',S.postiLocali)+'<h2>Una scoperta vicino a casa</h2>'+(S.scopertaVicino?'<p>'+esc(S.scopertaVicino)+'</p>':'');
   }
   if(S.sapori.length){ h+='<h2>I sapori</h2><ul>'+S.sapori.map(x=>'<li>'+esc(x.prodotto)+(x.dove?' — '+esc(x.dove):'')+'</li>').join('')+'</ul>'; }
-  if(S.momenti.length){ h+='<h2>Il film dell’estate</h2><ol>'+S.momenti.map(m=>'<li><b>'+esc(m.titolo||'Scena')+'</b>'+(m.testo?' — '+esc(m.testo):'')+'</li>').join('')+'</ol>'; }
+  if(S.vacanze&&S.vacanze.length){ h+='<h2>Le mie vacanze</h2><ul>'+S.vacanze.map(v=>'<li><b>'+esc(v.luogo||'Vacanza')+'</b>'+((v.inizio||v.fine)?' — '+esc(dataIt(v.inizio))+(v.fine?' → '+esc(dataIt(v.fine)):''):'')+'</li>').join('')+'</ul>'; }
+  if(S.momenti.length){ h+='<h2>Il film dell’estate</h2><ol>'+S.momenti.map(m=>'<li><b>'+esc(m.titolo||'Scena')+'</b>'+(m.data?' <span class="pr-row" style="display:inline">('+esc(dataIt(m.data))+')</span>':'')+(m.testo?' — '+esc(m.testo):'')+'</li>').join('')+'</ol>'; }
   if(S.colonna.length){ h+='<h2>Colonna sonora</h2><ul>'+S.colonna.map(x=>'<li>'+esc(x.titolo)+(x.artista?' — '+esc(x.artista):'')+'</li>').join('')+'</ul>'; }
-  h+='<h2>L’estate digitale</h2>'+riga('Foto scattate',D.fotoScattate)+riga('Foto pubblicate',D.fotoPubblicate)+
+  h+='<h2>L’estate digitale</h2>'+
+     (D.attivita&&D.attivita.length?riga('Attività online',D.attivita.join(', ')):'')+
+     riga('Foto scattate',D.fotoScattate)+riga('Foto pubblicate',D.fotoPubblicate)+
+     riga('Tempo sugli schermi',D.tempo)+riga('Equilibrio',ordLabel(D.equilibrio,{si:'sì',abbastanza:'abbastanza',poco:'poco'}))+
+     riga('Bufale incontrate',ordLabel(D.bufale,{si:'sì',forse:'forse',no:'no'}))+riga('Gentilezza online',D.gentilezza)+
      riga('Il percorso è servito',ordLabel(D.percorsoServito,{tanto:'sì, tanto',abbastanza:'abbastanza',poco:'poco'}))+
-     (D.frodi&&D.frodi.length?riga('Trappole incontrate',D.frodi.join(', ')):'')+riga('Privacy',D.privacy);
+     (D.frodi&&D.frodi.length?riga('Trappole incontrate',D.frodi.join(', ')):'')+
+     (D.privacyRegole&&D.privacyRegole.length?riga('Buone regole seguite',D.privacyRegole.length+' su '+5):'')+
+     riga('Privacy famiglia',D.privacy);
   h+='<h2>I compiti delle vacanze</h2>'+riga('A che punto',ordLabel(K.aPunto,{quasi:'quasi finiti',meta:'a metà',inizio:'appena iniziati'}))+
      riga('Come suonava «hai fatto i compiti?»',ordLabel(K.comeSuonava,{incoraggiamento:'un incoraggiamento',promemoria:'un promemoria',pressione:'una pressione'}))+
      riga('Come li cambierei',K.comeLiFarei);
