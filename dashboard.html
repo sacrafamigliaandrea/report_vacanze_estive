@@ -44,7 +44,7 @@ a.home{color:var(--mare);text-decoration:none;font-family:var(--head);font-weigh
 </head>
 <body>
 <!-- Blocco cifrato generato con cripta.html (config: url + token). Vuoto = da configurare. -->
-<script>var BLOB="shXCQktDQIkj1KylB4mgIFCxRujV1szvRex9Yts+iI8VbcIonhnLC1BN8tsO/yQcn+YhEZtxd9GZWBHtqmbUKOnyA5rxAYr0gIjlISUURRScca19tqZ1sMZDbTZDSfCaILGx5bUcCDl6L1hDdYkRF0A6bSeet/oHmR75Dq1rICd9Vvs0GE3NyRykcKJWD9WAhDwJJrlE35VvVJasOJwA2L0/nn3y7dwhWRjzgp66orYZmIP/X7hA7pbvlq0eu3d3kZQBLPUFzReOsPE3slU6iLnwUg==";</script>
+<script>var BLOB="7H3rp6P1QuBtKY8YPBYPERK336qAQcyye6VQDE2OcT9WC5RFbUISmK9Y1gr7R8tK9jeJDJxL9Ktqi2wNmLUc4iWlorEk2Hy3AI/BjwOCKkUkEp9kf8FxBC4pb5JKlEnSwpz/6jU2nQIIHHtDLa12IxBZ+uGH8v5vayvmqBF7y0NRmUjHGC2LJ2yOldpvq894dxy4Ki3doTOuhgilLpnZqmVvN2dLJxZ+WqzgpyMCbaKMZQV2GGmVq6zizjgm+AWchTGNtLlcDnxil3eym05H9rOyrA==";</script>
 
 <div id="gate" class="gate">
   <div style="font-family:var(--head);font-weight:700;color:var(--mare-d);font-size:20px">Area docente</div>
@@ -75,7 +75,7 @@ async function deriveKey(pwd,salt){
     base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
 }
 async function decifra(pwd){
-  const raw=ub64(BLOB), salt=raw.slice(0,16), iv=raw.slice(16,28), ct=raw.slice(28);
+  const raw=ub64(BLOB.replace(/\s+/g,'')), salt=raw.slice(0,16), iv=raw.slice(16,28), ct=raw.slice(28);
   const key=await deriveKey(pwd,salt);
   const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:iv},key,ct);
   return JSON.parse(dec.decode(pt));
@@ -85,12 +85,15 @@ let CFG=null;
 async function unlock(){
   const gmsg=document.getElementById('gmsg');
   if(!BLOB){ gmsg.textContent='Dashboard non ancora configurata: genera il blocco con cripta.html.'; gmsg.className='msg err'; return; }
+  // Controllo separato: il blocco è base64 valido?
+  try{ ub64(BLOB.replace(/\s+/g,'')); }
+  catch(bad){ gmsg.textContent='Il blocco cifrato non è valido: ricopialo da cripta.html.'; gmsg.className='msg err'; return; }
   try{
     CFG=await decifra(document.getElementById('pwd').value);
     document.getElementById('gate').style.display='none';
     document.getElementById('app').style.display='block';
     loadData();
-  }catch(e){ gmsg.textContent='Password errata.'; gmsg.className='msg err'; }
+  }catch(e){ gmsg.textContent='Password errata (dev\'essere identica a quella usata in cripta.html).'; gmsg.className='msg err'; }
 }
 document.getElementById('unlock').onclick=unlock;
 document.getElementById('pwd').addEventListener('keydown',e=>{ if(e.key==='Enter') unlock(); });
